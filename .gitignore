@@ -1,0 +1,9 @@
+# Ignore environment variables and sensitive info
+contact-form-server/.env
+
+# Ignore dependencies
+contact-form-server/node_modules
+
+# Optional: Ignore editor configs or OS files
+.DS_Store
+.vscode/
