@@ -1,5 +1,5 @@
 const form = document.getElementById('contact-form');
-const status = document.getElementById('form-status');
+const statusMsg = document.getElementById('form-status');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault(); // prevent default reload
@@ -23,16 +23,16 @@ form.addEventListener('submit', async (e) => {
 
     const result = await res.json();
 
-    status.style.display = 'block';
-    status.style.color = res.ok ? 'green' : 'red';
-    status.textContent = result.message;
+    statusMsg.style.display = 'block';
+    statusMsg.style.color = res.ok ? 'green' : 'red';
+    statusMsg.textContent = result.message;
 
     if (res.ok) {
       form.reset();
     }
   } catch (err) {
-    status.style.display = 'block';
-    status.style.color = 'red';
-    status.textContent = 'Something went wrong. Please try again later.';
+    statusMsg.style.display = 'block';
+    statusMsg.style.color = 'red';
+    statusMsg.textContent = 'Something went wrong. Please try again later.';
   }
 });
