@@ -12,7 +12,8 @@ form.addEventListener('submit', async (e) => {
   };
 
   try {
-    const res = await fetch('http://localhost:3000/contact', {
+    const endpoint = form.getAttribute('data-api') || '/contact';
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
