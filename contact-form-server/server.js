@@ -1,18 +1,21 @@
-require('dotenv').config(); // ← Load .env
+require('dotenv').config(); //load environment variables
 
-const express = require('express');
-const nodemailer = require('nodemailer');
+//imports for building api, using gmail and middleware from other origin requests
+const express = require('express');         
+const nodemailer = require('nodemailer');   
 const cors = require('cors');
 
+//create express app and middleware
 const app = express();
-app.use(cors());
-app.use(express.json()); // For JSON requests
-app.use(express.urlencoded({ extended: true })); // For form data
+app.use(cors());                                  //cross origin requests
+app.use(express.json());                          //parse json
+app.use(express.urlencoded({ extended: true }));  //form data
 
-// POST endpoint
+//POST endpoint
 app.post('/contact', async (req, res) => {
   const { name, email, message } = req.body;
 
+  //configure gmail SMTP server
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -21,8 +24,9 @@ app.post('/contact', async (req, res) => {
     },
   });
 
+  //email details
   const mailOptions = {
-    from: `"${name}" <${process.env.EMAIL_USER}>`,  // still your email, but shows their name
+    from: `"${name}" <${process.env.EMAIL_USER}>`, 
     to: process.env.EMAIL_USER,
     subject: `Contact Form Message from ${name}`,
     text: `
@@ -36,7 +40,7 @@ app.post('/contact', async (req, res) => {
     replyTo: email  //respond to the sender
   };
 
-
+  //try to send the email
   try {
     await transporter.sendMail(mailOptions);
     res.status(200).send({ success: true, message: 'Email sent successfully!' });
@@ -46,4 +50,5 @@ app.post('/contact', async (req, res) => {
   }
 });
 
+//start the server on localhost:3000 for local deployment
 app.listen(3000, () => console.log('Server running on http://localhost:3000'));
