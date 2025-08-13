@@ -22,11 +22,20 @@ app.post('/contact', async (req, res) => {
   });
 
   const mailOptions = {
-    from: email,
+    from: `"${name}" <${process.env.EMAIL_USER}>`,  // still your email, but shows their name
     to: process.env.EMAIL_USER,
     subject: `Contact Form Message from ${name}`,
-    text: message,
+    text: `
+  You have a new contact form submission:
+
+  Name: ${name}
+  Email: ${email}
+  Message:
+  ${message}
+    `,
+    replyTo: email  //respond to the sender
   };
+
 
   try {
     await transporter.sendMail(mailOptions);
